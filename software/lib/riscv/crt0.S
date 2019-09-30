@@ -31,7 +31,7 @@ BSS_CLEAR:
 	jal ra, main_test
 #endif
 	li	s10, 0xe0000000		# this will interrupt the simulation (assertion)
-	sw	zero, 0(s10)
+	sw	a0, 0(s10)          # a0 captures the return value from main. used for unit testing
 
 
 L1:
