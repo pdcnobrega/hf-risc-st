@@ -26,4 +26,7 @@ install:
 script:
   - cd software/tests/sort
   - make test
+  - cd - 
+  - cd software/tests/sqrt
+  - make test
 
