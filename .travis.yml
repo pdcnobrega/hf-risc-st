@@ -1,0 +1,29 @@
+# Travis example for Modern C++ by Rafał Pocztarski
+# For more languages and info see:
+# https://github.com/rsp/travis-hello#readme
+
+sudo: false
+language: cpp
+compiler:
+  - gcc
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-6
+    - valgrind
+before_install:
+  # download riscv32 compiler
+  - chmod +x download-gdrive.sh
+  - ./download-gdrive.sh
+  - tar xvzf riscv-gcc.tar.gz --strip-components 2
+  - export PATH=$PWD/riscv-elf/gcc-8.1.0/bin:$PATH
+  - export HFOS_ROOT=$PWD
+  - echo $PWD
+install:
+- "[ $CXX = g++ ] && export CXX=g++-6 || true"
+script:
+  - cd software/tests/sort
+  - make test
+

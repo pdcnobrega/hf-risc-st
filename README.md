@@ -1,4 +1,10 @@
-# HF-RISC SoC
+# HF-RISC SoC 
+
+
+Test results:
+
+[<img alt="Build Status" src="https://travis-ci.org/andersondomingues/hf-risc-st forked from sjohann81/hf-risc
+.svg?branch=master" height="40">][travis-url]
 
 ---
 ### Description
