@@ -1,5 +1,5 @@
 # mude somente essa linha abaixo para apontar p o diretorio do hellfireos
-HFOS_ROOT=/home/ale/repos/gaph/anderson/hf-risc-st
+#HFOS_ROOT=/home/ale/repos/gaph/anderson/hf-risc-st
 HFOS_SW=$(HFOS_ROOT)/software/
 SIMDIR = $(HFOS_SW)/tools/sim/hf_riscv_sim/
 ## use TFIXED, TFLOAT or TDOUBLE
@@ -45,9 +45,9 @@ sim: $(HFOS_ROOT)/tools/sim/hf_riscv_sim/hf_riscv_sim.c
 
 test: crt sim 
 	$(GCC_$(ARCH)) -o test.o test.c     -D$(MATRIX_TYPE) -I$(HFOS_SW)/include  # compila o teste
-	$(GCC_$(ARCH)) -o tester.o tester.c -D$(MATRIX_TYPE) -I$(HFOS_SW)/include  # compila o testador
+#	$(GCC_$(ARCH)) -o tester.o tester.c -D$(MATRIX_TYPE) -I$(HFOS_SW)/include  # compila o testador
 	@$(MAKE) --no-print-directory app
 	./hf_riscv_sim ./code.bin
 
 clean:
-	-rm -rf *~ *.o *.elf *.map *.lst *.sec *.cnt *.txt *.bin *.vhd
+	-rm -rf *~ *.o *.elf *.map *.lst *.sec *.cnt *.txt *.bin *.vhd hf_riscv_sim

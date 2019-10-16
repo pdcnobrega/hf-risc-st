@@ -1,28 +1,3 @@
-# Travis example for Modern C++ by Rafał Pocztarski
-# For more languages and info see:
-# https://github.com/rsp/travis-hello#readme
-
-sudo: false
-language: cpp
-compiler:
-  - gcc
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-6
-    - valgrind
-before_install:
-  # download riscv32 compiler
-  - chmod +x ./tools/download-riscv32-gcc-gdrive.sh
-  - ./tools/download-riscv32-gcc-gdrive.sh
-  - tar xvzf riscv-gcc.tar.gz --strip-components 2
-  - export PATH=$PWD/riscv-elf/gcc-8.1.0/bin:$PATH
-  - export HFOS_ROOT=$PWD
-  - echo $PWD
-install:
-- "[ $CXX = g++ ] && export CXX=g++-6 || true"
 script:
   - cd software/tests/sort
   - make test
@@ -30,3 +5,52 @@ script:
   - cd software/tests/sqrt
   - make test
 
+
+language: c
+sudo: true
+
+git:
+  submodules: false
+
+compiler:
+ - gcc
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.8
+    packages:
+    - g++-6
+    - valgrind
+    - cppcheck
+
+before_install:
+ - ls -las
+ - export MAKEFLAGS="-j3"
+ - export CXX=g++-6
+ - export CC=gcc-6
+ - export PATH="$PATH:/opt/riscv/bin"
+ - chmod +x ./tools/download-riscv32-gcc-gdrive.sh
+ - ./tools/download-riscv32-gcc-gdrive.sh
+ - tar xvzf riscv-gcc.tar.gz --strip-components 2
+ - export PATH=$PWD/riscv-elf/gcc-8.1.0/bin:$PATH
+ - export HFOS_ROOT=$PWD
+ - echo $PWD
+
+install:
+ - "[ $CXX = g++ ] && export CXX=g++-6 || true"
+ - gcc -o ${TRAVIS_BUILD_DIR}/hf_riscv_sim ${TRAVIS_BUILD_DIR}/tools/sim/hf_riscv_sim/hf_riscv_sim.c # Compile the riscv simulator
+
+script:
+ - cd ${TRAVIS_BUILD_DIR}/software/tests
+ - chmod +x test-all.sh && ./test-all.sh
+
+after_script:
+ - ls
+
+after_success:
+ - echo "Success"
+
+after_failure:
+ - echo "Fail"

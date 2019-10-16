@@ -4,6 +4,12 @@
 // function under test 
 float sqrt(float arg);
 
+
+// list of individual tests
+void sqrt1_test();
+void sqrt4_test();
+
+
 // place here a nice description for each test
 void sqrt1_test(){
 	float v = sqrt(1.0);
@@ -26,11 +32,6 @@ void sqrt4_test(){
 
 // main test
 void hfunit_test(){
-	hfunit_init();
 	sqrt1_test();
-	sqrt4_test();
-	
-	hfunit_assert(0, "zero");
-	hfunit_assert(1, "one");
-	
+	sqrt4_test();	
 }

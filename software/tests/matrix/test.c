@@ -10,18 +10,9 @@ just change the variable MATRIX_TYPE in the makefile
 
 
 // list of individual tests
-//void sqrt1_test();
-//void sqrt4_test();
 void super_mat_test();
 
-// main test
-void hfunit_run_tests(){
-	super_mat_test();
-}
-
 // place here a nice description for each test
-// eu peguei um exemplao só p vcs verem como usar as funcoes
-// mas vcs vao ter q separar bem os teste. nao pode fazer assim !!!
 void super_mat_test() {
 
 struct Matrix M1, M2, M3, M4, M5, M6, M7;
@@ -85,5 +76,9 @@ M7 =  customMat(4, conf, M1, M2, M3, M5);
 printf("Custom Matrix Made of Four Matrices:\n");
 print_matrix(M7);
 
+}
 
+// main test
+void hfunit_test(){
+	super_mat_test();
 }
