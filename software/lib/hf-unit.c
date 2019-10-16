@@ -126,7 +126,7 @@ int hfunit_veccomp(void* v1, void* v2, uint32_t size){
  * @return the number of elements unique to some vector
  */
 int hfunit_comp_f(float f1, float f2, uint32_t size){
-	return !(((f1 - HFUNIT_PRECISION) < f2) && ((f1 + HFUNIT_PRECISION) > f2));
+	return (((f1 - HFUNIT_PRECISION) < f2) && ((f1 + HFUNIT_PRECISION) > f2));
 }
 
 // =======================

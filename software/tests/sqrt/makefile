@@ -47,4 +47,4 @@ test: crt sim
 	./hf_riscv_sim ./code.bin
 
 clean:
-	-rm -rf *~ *.o *.elf *.map *.lst *.sec *.cnt *.txt *.bin *.vhd
+	-rm -rf *~ *.o *.elf *.map *.lst *.sec *.cnt *.txt *.bin *.vhd hf_riscv_sim
