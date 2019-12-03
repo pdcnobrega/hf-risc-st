@@ -1,0 +1,871 @@
+cscope 15 $HOME/testePedro/hf-risc-st/software/tests/fixed_float               0000004306
+	@fixed_float.c
+
+1 
+	~<hf-risc.h
+>
+
+2 
+	~<fixed.h
+>
+
+4 
+	gexecu‹d_‹¡s
+=0;
+
+5 
+	gçžed_‹¡s
+=0;
+
+7 
+	$‹¡æßt_add
+(
+mš
+, 
+max
+, 
+¡•
+)
+
+9 
+i
+, 
+s
+ = 0.0;
+
+11 
+i
+ = 
+mš
+; i < 
+max
+; i +ð
+¡•
+)
+
+12 
+s
+ +ð
+¡•
+;
+
+14  
+s
+;
+
+15 
+	}
+}
+
+17 
+fixed_t
+ 
+	$‹¡fixed_add
+(
+fixed_t
+ 
+mš
+, fixed_ˆ
+max
+, fixed_ˆ
+¡•
+)
+
+19 
+fixed_t
+ 
+i
+, 
+s
+ = 
+	`fix_v®
+(0.0);
+
+21 
+i
+ = 
+mš
+; i < 
+max
+; i +ð
+¡•
+)
+
+22 
+s
+ +ð
+¡•
+;
+
+24  
+s
+;
+
+25 
+	}
+}
+
+27 
+	$‹¡æßt_sub
+(
+mš
+, 
+max
+, 
+¡•
+)
+
+29 
+i
+, 
+s
+ = 0.0;
+
+31 
+i
+ = 
+max
+; i >ð
+mš
+; i -ð
+¡•
+)
+
+32 
+s
+ -ð
+¡•
+;
+
+34  
+s
+;
+
+35 
+	}
+}
+
+37 
+fixed_t
+ 
+	$‹¡fixed_sub
+(
+fixed_t
+ 
+mš
+, fixed_ˆ
+max
+, fixed_ˆ
+¡•
+)
+
+39 
+fixed_t
+ 
+i
+, 
+s
+ = 
+	`fix_v®
+(0.0);
+
+41 
+i
+ = 
+max
+; i >ð
+mš
+; i -ð
+¡•
+)
+
+42 
+s
+ -ð
+¡•
+;
+
+44  
+s
+;
+
+45 
+	}
+}
+
+47 
+	$‹¡æßt_mul
+(
+mš
+, 
+max
+, 
+¡•
+)
+
+49 
+i
+, 
+s
+ = 
+max
+;
+
+51 
+i
+ = 
+mš
+; i < 
+max
+; i +ð
+¡•
+)
+
+52 
+s
+ *= 1.000001;
+
+54  
+s
+;
+
+55 
+	}
+}
+
+57 
+fixed_t
+ 
+	$‹¡fixed_mul
+(
+fixed_t
+ 
+mš
+, fixed_ˆ
+max
+, fixed_ˆ
+¡•
+)
+
+59 
+fixed_t
+ 
+i
+, 
+s
+ = 
+max
+;
+
+61 
+i
+ = 
+mš
+; i < 
+max
+; i +ð
+¡•
+)
+
+62 
+s
+ = 
+	`fix_mul
+(s, 
+	`fix_v®
+(1.000001));
+
+64  
+s
+;
+
+65 
+	}
+}
+
+67 
+	$‹¡æßt_div
+(
+mš
+, 
+max
+, 
+¡•
+)
+
+69 
+i
+, 
+s
+ = 
+max
+;
+
+71 
+i
+ = 
+mš
+; i < 
+max
+; i +ð
+¡•
+)
+
+72 
+s
+ /= 1.000001;
+
+74  
+s
+;
+
+75 
+	}
+}
+
+77 
+fixed_t
+ 
+	$‹¡fixed_div
+(
+fixed_t
+ 
+mš
+, fixed_ˆ
+max
+, fixed_ˆ
+¡•
+)
+
+79 
+fixed_t
+ 
+i
+, 
+s
+ = 
+max
+;
+
+81 
+i
+ = 
+mš
+; i < 
+max
+; i +ð
+¡•
+)
+
+82 
+s
+ = 
+	`fix_div
+(s, 
+	`fix_v®
+(1.000001));
+
+84  
+s
+;
+
+85 
+	}
+}
+
+87 
+	$as£¹
+(
+‹¡
+, cÚ¡ * 
+mes§ge
+){
+
+88 ià(
+‹¡
+ == 0) {
+
+89 
+	`´štf
+("E¼Ü: %s\n", 
+mes§ge
+);
+
+90 
+çžed_‹¡s
+++;
+
+92 
+execu‹d_‹¡s
+++;
+
+93 
+	}
+}
+
+95 
+fixed_t
+ 
+	$‹¡_n_low”_lim™
+()
+
+97 
+fixed_t
+ 
+šput
+ = 
+	`fix_v®
+(1);
+
+98 
+fixed_t
+ 
+»suÉ
+ = 
+	`fix_Ê
+(
+šput
+);
+
+100 
+št8_t
+ 
+buf
+[30];
+
+101 
+	`fixtß
+(
+»suÉ
+, 
+buf
+, 6);
+
+103 
+	`as£¹
+(
+buf
+[0] == '0' && (buf[1] == '\0' || (buf[2] == '0' && buf[3] == '0')), "natural†og of 1 should be‡s closeo zero‡s…ossible");
+
+104  
+»suÉ
+;
+
+105 
+	}
+}
+
+107 
+fixed_t
+ 
+	$‹¡_n_im¶em’tiÚ_lim™
+()
+
+109 
+fixed_t
+ 
+šput
+ = 
+	`fix_v®
+(1.5f);
+
+110 
+fixed_t
+ 
+»suÉ
+ = 
+	`fix_Ê
+(
+šput
+);
+
+112 
+št8_t
+ 
+buf
+[30];
+
+113 
+	`fixtß
+(
+»suÉ
+, 
+buf
+, 6);
+
+115 
+	`as£¹
+(
+buf
+[0] == '0' && buf[1] == '.' && buf[2] == '4' && buf[3] == '0', "natural†og 1.5 should be closeo 0.405");
+
+116  
+»suÉ
+;
+
+117 
+	}
+}
+
+119 
+	$fix_n_‹¡
+()
+
+121 
+	`‹¡_n_low”_lim™
+();
+
+122 
+	`‹¡_n_im¶em’tiÚ_lim™
+();
+
+123 
+	}
+}
+
+125 
+	$maš
+()
+
+128 vÞ©ž
+mšæ
+ = -1000.0;
+
+129 vÞ©ž
+maxæ
+ = 1000.0;
+
+130 vÞ©ž
+¡•æ
+ = 0.1;
+
+131 
+væ
+;
+
+132 
+fixed_t
+ 
+mšfx
+ = 
+	`fix_v®
+(
+mšæ
+);
+
+133 
+fixed_t
+ 
+maxfx
+ = 
+	`fix_v®
+(
+maxæ
+);
+
+134 
+fixed_t
+ 
+¡•fx
+ = 
+	`fix_v®
+(
+¡•æ
+);
+
+135 
+fixed_t
+ 
+vfx
+;
+
+136 
+št8_t
+ 
+buf
+[20];
+
+138 
+	`´štf
+("\nfloat / fixed…oint speedest\n");
+
+139 
+væ
+ = 
+	`‹¡æßt_add
+(
+mšæ
+, 
+maxæ
+, 
+¡•æ
+);
+
+140 
+	`áß
+(
+væ
+, 
+buf
+, 6);
+
+141 
+	`´štf
+("æßˆadd: %s\n", 
+buf
+);
+
+143 
+vfx
+ = 
+	`‹¡fixed_add
+(
+mšfx
+, 
+maxfx
+, 
+¡•fx
+);
+
+144 
+	`fixtß
+(
+vfx
+, 
+buf
+, 6);
+
+145 
+	`´štf
+("fixed‡dd: %s\n", 
+buf
+);
+
+147 
+væ
+ = 
+	`‹¡æßt_sub
+(
+mšæ
+, 
+maxæ
+, 
+¡•æ
+);
+
+148 
+	`áß
+(
+væ
+, 
+buf
+, 6);
+
+149 
+	`´štf
+("æßˆsub: %s\n", 
+buf
+);
+
+151 
+vfx
+ = 
+	`‹¡fixed_sub
+(
+mšfx
+, 
+maxfx
+, 
+¡•fx
+);
+
+152 
+	`fixtß
+(
+vfx
+, 
+buf
+, 6);
+
+153 
+	`´štf
+("fixed sub: %s\n", 
+buf
+);
+
+155 
+væ
+ = 
+	`‹¡æßt_mul
+(
+mšæ
+, 
+maxæ
+, 
+¡•æ
+);
+
+156 
+	`áß
+(
+væ
+, 
+buf
+, 6);
+
+157 
+	`´štf
+("æßˆmul: %s\n", 
+buf
+);
+
+159 
+vfx
+ = 
+	`‹¡fixed_mul
+(
+mšfx
+, 
+maxfx
+, 
+¡•fx
+);
+
+160 
+	`fixtß
+(
+vfx
+, 
+buf
+, 6);
+
+161 
+	`´štf
+("fixed mul: %s\n", 
+buf
+);
+
+163 
+væ
+ = 
+	`‹¡æßt_div
+(
+mšæ
+, 
+maxæ
+, 
+¡•æ
+);
+
+164 
+	`áß
+(
+væ
+, 
+buf
+, 6);
+
+165 
+	`´štf
+("æßˆdiv: %s\n", 
+buf
+);
+
+167 
+vfx
+ = 
+	`‹¡fixed_div
+(
+mšfx
+, 
+maxfx
+, 
+¡•fx
+);
+
+168 
+	`fixtß
+(
+vfx
+, 
+buf
+, 6);
+
+169 
+	`´štf
+("fixed div: %s\n", 
+buf
+);
+
+171 
+	`´štf
+("=====================\n");
+
+172 
+	`´štf
+("natural†og of 1: ");
+
+173 
+	`fix_´št
+(
+	`‹¡_n_low”_lim™
+());
+
+174 
+	`´štf
+("\n");
+
+175 
+	`´štf
+("natural†og of 1.5: ");
+
+176 
+	`fix_´št
+(
+	`‹¡_n_im¶em’tiÚ_lim™
+());
+
+177 
+	`´štf
+("\n");
+
+178 
+	`´štf
+("=====================\n");
+
+179 
+	`´štf
+("%de¡ execu‹d - %de¡ çžed\n", 
+execu‹d_‹¡s
+, 
+çžed_‹¡s
+);
+
+180 
+	`´štf
+("=====================\n");
+
+181 ià(
+çžed_‹¡s
+ != 0) {
+
+182 
+	`´štf
+("TEST FAILED !!!\n");
+
+185 
+	`´štf
+("TEST SUCCEEDED !!!\n");
+
+188 
+	}
+}
+
+	@
+1
+.
+1
+/usr/include
+1
+14
+fixed_float.c

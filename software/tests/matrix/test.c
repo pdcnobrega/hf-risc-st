@@ -15,19 +15,25 @@ void super_mat_test();
 // place here a nice description for each test
 void super_mat_test() {
 
-struct Matrix M1, M2, M3, M4, M5, M6, M7;
+struct Matrix M0, M1, M2, M3, M4, M5, M6, M7, M8, M9, M10 ;
 typ_var Multiplicator = val(5);
 
 typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
 typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
+
 typ_var val3[16] = {val(4),val(2),val(2),val(2),val(0),val(1),val(-3),val(3),val(0),val(-1),val(3),val(3),val(0),val(3),val(1),val(1)};
 
-M1 = set_values(4, 4, val1);
-M2 = set_values(4, 4, val2);
-M3 = set_values(4, 4, val3);
+M0  = set_values( 8, 2, val1);
+M1  = set_values( 4, 4, val1);
+M2  = set_values( 4, 4, val2);
+M3  = set_values( 4, 4, val3);
+M9  = set_values( 0, 0, val2);
+M10 = set_values(-2, 8, val3);
 
 //----------------------------FUNCTIONS TESTS-----------------------------------
-
+printf("Matriz retangular 8x2");
+print_matrix(M0);
 printf("Matrix 1 is:\n");
 print_matrix(M1);
 printf("Matrix 2 is:\n");
@@ -76,8 +82,18 @@ M7 =  customMat(4, conf, M1, M2, M3, M5);
 printf("Custom Matrix Made of Four Matrices:\n");
 print_matrix(M7);
 
-}
+printf("Subtraction between a rectangular matrix and a square matrix. Expected error");
+M8 = subtraction(M0, M1);
+print_matrix(M8);
 
+printf("Matrix of size 0. Expected error");
+print_matrix(M9);
+
+printf("Matrix of negative size. Expected error");
+print_matrix(M10);
+
+
+}
 // main test
 void hfunit_test(){
 	super_mat_test();
