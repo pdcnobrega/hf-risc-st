@@ -121,8 +121,13 @@ struct Matrix multiplication(struct Matrix m1, struct Matrix m2)
 {
 
   struct Matrix out;
-  out.line = m1.line;
-  out.column = m2.column;
+  struct Matrix temp;
+
+  temp.line = m1.line;
+  temp.column = m2.column;
+  
+  out.line = temp.line;
+  out.column = temp.column;
   typ_var auxm = val(0.0);
 
 	if (m1.column == m2.line){
@@ -136,14 +141,14 @@ struct Matrix multiplication(struct Matrix m1, struct Matrix m2)
 			}
 		}
 
-    return out;
+    out = temp;
 	}
 
 		else
 		{
 			printf("Impossible to Multiplicate Those Matrices!!!\n");
 		}
-
+return out;
 }
 
 //----------------> MULTIPLICATION NUMBER = CTE * MATRIX  <---------------------
@@ -319,10 +324,15 @@ struct Matrix blkdiag2(struct Matrix m1, struct Matrix m2)
 //               will not be developed a restriction for placement.
 
 
-struct Matrix customMat(int n_mats, int conf[], ...)
+struct Matrix customMat(int conf[], int n_mats, ...)
 {
   struct Matrix aux;
   struct Matrix out;
+
+  aux.line   = 0;
+  aux.column = 0;
+
+
 
   int auxX = 0;
   int auxY = 0;

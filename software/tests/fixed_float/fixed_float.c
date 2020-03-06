@@ -3,6 +3,7 @@
 int executed_tests=0;
 int failed_tests=0;
 
+/*
 // funcao para comparação
 void assert1(int test, const char * message){
         if (test == 0) {
@@ -11,20 +12,21 @@ void assert1(int test, const char * message){
         }
         executed_tests++;
 }
+*/
 
 //Função cosseno
 void fix_cos_test(fixed_t entrada,fixed_t esperado,char* msg){
 	fixed_t saida;
 	saida=fix_cos(entrada);
 	fixed_t arred = saida - esperado;
-	assert1(arred<0.000001||arred>0.000001,msg);
+	hfunit_assert(arred<0.000001||arred>0.000001,msg);
 }
 //Função seno
 void fix_sin_test(fixed_t entrada,fixed_t esperado,char* msg){
         fixed_t saida;
         saida=fix_sin(entrada);
 	fixed_t arred = saida - esperado;
-        assert1(arred<0.000001||arred>0.000001,msg); 
+        hfunit_assert(arred<0.000001||arred>0.000001,msg); 
 }
 /*
 Recebe valor de entrada, eleva a constante 'e' ao valor de entrada, atribui o
@@ -35,7 +37,7 @@ void fix_exp_test(fixed_t entrada,fixed_t esperado,char* msg){
         fixed_t saida;
         saida=fix_exp(entrada);
 	fixed_t arred = saida - esperado;
-        assert1(arred<0.000001||arred>0.000001,msg);
+        hfunit_assert(arred<0.000001||arred>0.000001,msg);
 }
 /*
 Calcula a raiz quadrada do valor de entrada, atribui o resultado à variável saída
@@ -45,27 +47,23 @@ void fix_sqrt_test(fixed_t entrada, fixed_t esperado, char* msg){
 	fixed_t saida;
 	saida=fix_sqrt(entrada);
 	fixed_t arred = saida - esperado;
-        assert1(arred<0.000001||arred>0.000001,msg);
+        hfunit_assert(arred<0.000001||arred>0.000001,msg);
 }
 
 // função testada sera a fix_logaritmo
 fixed_t fix_log(fixed_t fp, fixed_t base);
 
 
-void teste1(){
-	fixed_t input = fix_val(5.5f);
-        // atribuicao do valor fixed a funcao fix_ln
+void teste_fix_log(fixed_t input, fixed_t esperado,char* msg){        
         fixed_t result = fix_log(input,10);
-
-        int8_t buf[30];
-        fixtoa(result, buf, 6);
-
-        assert1(buf[0] == '1' && buf[1] == '.' && buf[2] == '7' && buf[3] == '0', "Log de 1.5f deve ser aproximadamente 1.704748");
+	fixed_t arred = result - esperado;
+        hfunit_assert(arred<0.000001||arred>0.000001,msg);
 }
+
 void test_tamanho() {
 	fixed_t test_tam = pow (2,FIX_IBITS);
 	
-	assert1(test_tam<fix_val(472700090348091277312),"número muito grande");
+	hfunit_assert(test_tam<fix_val(472700090348091277312),"número muito grande");
 }
 
 float testfloat_add(float min, float max, float step)
@@ -164,7 +162,7 @@ fixed_t test_tan_lower_limit()
         int8_t buf[30];
         fixtoa(result, buf, 6);
 
-        assert1(buf[0] == '0' && (buf[1] == '\0' || (buf[2] == '0' && buf[3] == '0')), "natural log of 1 should be as close to zero as possible");
+        hfunit_assert(buf[0] == '0' && (buf[1] == '\0' || (buf[2] == '0' && buf[3] == '0')), "log natural de 1");
 	return result;
 }
 
@@ -176,7 +174,7 @@ fixed_t test_tan_implementation_limit()
         int8_t buf[30];
         fixtoa(result, buf, 6);
 
-        assert1(buf[0] == '0' && buf[1] == '.' && buf[2] == '4' && buf[3] == '0', "natural log 1.5 should be close to 0.405");
+        hfunit_assert(buf[0] == '0' && buf[1] == '.' && buf[2] == '4' && buf[3] == '0', "log natural de 1.5");
 	return result;
 }
 
@@ -185,8 +183,8 @@ void fix_tan_test()
         test_tan_lower_limit();
         test_tan_implementation_limit();
 }
-int main()
-{
+
+void hfunit_test(){
 	/* volatile is being used to avoid the optimizer from being too smart */
 	volatile float minfl = -1000.0;
 	volatile float maxfl = 1000.0;
@@ -232,24 +230,24 @@ int main()
 	printf("fixed div: %s\n", buf);
 
         printf("=====================\n");
-	printf("natural log of 1: ");
+	printf("natural log of 1\n");
 	fix_print(test_tan_lower_limit());
 	printf("\n");
-	printf("natural log of 1.5: ");
+	printf("natural log of 1.5\n");
         fix_print(test_tan_implementation_limit());
 	printf("\n");
 
-	teste1();
+	teste_fix_log(1.5f, 1.704748, "log de 1.5");
 	test_tamanho();
 
 	printf("=====================\n");
 	printf("Função exponencial\n");
-	fix_exp_test(fix_val(0.0),fix_val(1.0),"Esperado: 1.0");
-	fix_exp_test(fix_val(1.0),fix_val(2.718261),"Esperado: 2.718261");
-	fix_exp_test(fix_val(2.0),fix_val(7.3890561),"Esperado: 7.3890561");
-	fix_exp_test(fix_val(3.0),fix_val(20.085537),"Esperado: 20.085537");
-	fix_exp_test(fix_val(22.1807097779),fix_val(4294967295.9999),"Esperado: 4294967295.9999");
-	fix_exp_test(fix_val(-1),fix_val(0.36787944117),"Esperado: 0.36787944117");
+	fix_exp_test(fix_val(0.0),fix_val(1.0),"Exponencial de 0");
+	fix_exp_test(fix_val(1.0),fix_val(2.718261),"Exponencial de 1");
+	fix_exp_test(fix_val(2.0),fix_val(7.3890561),"Exponencial de 2");
+	fix_exp_test(fix_val(3.0),fix_val(20.085537),"Exponencial de 3");
+	fix_exp_test(fix_val(22.1807097779),fix_val(4294967295.9999),"Exponencial de 22.1807097779");
+	fix_exp_test(fix_val(-1),fix_val(0.36787944117),"Exponencial de -1");
 	fix_exp_test(fix_val(-4294967295.9999),fix_val(0.0),"Esperado: 0.0");
 	printf("=====================\n");
         printf("Função raiz quadrada\n");
@@ -281,13 +279,23 @@ int main()
         fix_sin_test(fix_val(FIX_TWO_PI),fix_val(0.0),"Esperado: 0.0");
         fix_sin_test(fix_val(2.0),fix_val(0.909),"Esperado: 0.909");
 	fix_sin_test(fix_val(3*FIX_HALF_PI),fix_val(-1.0),"Esperado: -1.0");
+}
 
-        printf("=====================\n");
-        printf("%d tests executed - %d tests failed\n", executed_tests, failed_tests);
-        printf("=====================\n");
-        if (failed_tests != 0) {
-                printf("TEST FAILED !!!\n");
-                return 1;
-        } else printf("TEST SUCCEEDED !!!\n");
-	return 0;
+int main (int argc, char** argv) {
+	hfunit_init();
+
+        HFUNIT_MSG("====================================[HFUNIT]");
+        hfunit_test();
+        hfunit_report();
+
+        HFUNIT_MSG(
+                !hfunit_get_test_failed()
+                        ? "TEST SET PASSED!"
+                        : "TEST SET FAILED!"
+        );
+
+        HFUNIT_MSG("============================================");
+	
+	//returns status to upper level
+        return hfunit_get_test_failed();
 }

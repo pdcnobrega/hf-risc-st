@@ -45,6 +45,7 @@ void hfunit_init(){
 	_hfunit_counter_failed_tests = 0;	
 }
 
+
 /**
  * @brief Entry-point for the unit framework, replaces "main"
  * @param argc optional number of arguments

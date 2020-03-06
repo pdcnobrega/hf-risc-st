@@ -8,93 +8,347 @@ just change the variable MATRIX_TYPE in the makefile
 #include <hf-risc.h>
 #include <hf-unit.h>
 
+void transposed_test (char* msg) {
+	struct Matrix m;
+	struct Matrix transp;
+	int erro = 0;
+	typ_var val[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
 
-// list of individual tests
-void super_mat_test();
+	m  = set_values( 4, 4, val);
+	transp  = transposed(m);
 
-// place here a nice description for each test
-void super_mat_test() {
+	struct Matrix esperada;
+	typ_var esp[16] = {val(1),val(5),val(9),val(13),val(2),val(6),val(10),val(14),val(3),val(7),val(11),val(15),val(4),val(8),val(12),val(16)};
+	esperada = set_values(4, 4, esp);
 
-struct Matrix M0, M1, M2, M3, M4, M5, M6, M7, M8, M9, M10 ;
-typ_var Multiplicator = val(5);
+	for (int i=0; i<4; i++) {
+	    for(int j=0; j<4; j++) {
+		if (get_value(transp,i,j)!=get_value(esperada,i,j)) {
+			erro = 1;
+		}
+	    }
+	}
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+	print_matrix(transp);
+	printf("Esperada:\n");
+	print_matrix(esperada);
+} 
 
-typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+void sum_matrix_test(char* msg) {
+	struct Matrix M1, M2, M3, esperada;
+	typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
 
-typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
+	typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
 
-typ_var val3[16] = {val(4),val(2),val(2),val(2),val(0),val(1),val(-3),val(3),val(0),val(-1),val(3),val(3),val(0),val(3),val(1),val(1)};
+	typ_var val3[16] = {val(3),val(5),val(7),val(9),val(11),val(13),val(15),val(17),val(19),val(21),val(23),val(25),val(27),val(29),val(31),val(33)};
+	
+	M1 = set_values(4, 4, val1);
+	M2 = set_values(4, 4, val2);
+	esperada = set_values(4, 4, val3);
+	M3 = sum(M1, M2);
+	
+	int erro = 0;
 
-M0  = set_values( 8, 2, val1);
-M1  = set_values( 4, 4, val1);
-M2  = set_values( 4, 4, val2);
-M3  = set_values( 4, 4, val3);
-M9  = set_values( 0, 0, val2);
-M10 = set_values(-2, 8, val3);
-
-//----------------------------FUNCTIONS TESTS-----------------------------------
-printf("Matriz retangular 8x2");
-print_matrix(M0);
-printf("Matrix 1 is:\n");
-print_matrix(M1);
-printf("Matrix 2 is:\n");
-print_matrix(M2);
-printf("Matrix 3 is:\n");
-print_matrix(M3);
-printf("Transposed of Matrix 1 is:\n");
-M4 = transposed(M1);
-print_matrix(M4);
-printf("Sum of Matrix 1 and 2 is:\n");
-M5 = sum(M1, M2);
-print_matrix(M5);
-printf("Subtraction of Matrix 1 and 2 is:\n");
-M5 = subtraction(M1, M2);
-print_matrix(M5);
-printf("Multiplication of Matrix 1 and 2 is:\n");
-M5 = multiplication(M1, M2);
-print_matrix(M5);
-printf("Multiplication of Matrix 1 by ");
-SHOW(Multiplicator);
-printf(":\n");
-M5 = multE(M1, Multiplicator);
-print_matrix(M5);
-printf("Division of Matrix 1 by ");
-SHOW(Multiplicator);
-printf(":\n");
-M5 = divE(M1, Multiplicator);
-print_matrix(M5);
-printf("Inverse of Matrix 3 is:\n");
-M5 = Invert(M3);
-print_matrix(M5);
-printf("Matrix of zeros of size %d by %d:\n", 4, 4);
-M5 = zeros(4, 4);
-print_matrix(M5);
-printf("Identity Matrix of size %d by %d:\n", 4, 4);
-M5 = setEye(4);
-print_matrix(M5);
-printf("Matrix of ones of size %d by %d:\n", 3, 3);
-M6 = ones(3, 3);
-print_matrix(M6);
-printf("Diagonal Block Concatenation of Two Matrices:\n");
-M7 = blkdiag2(M1, M2);
-print_matrix(M7);
-int conf[4] = {2,2,8,8};
-M7 =  customMat(4, conf, M1, M2, M3, M5);
-printf("Custom Matrix Made of Four Matrices:\n");
-print_matrix(M7);
-
-printf("Subtraction between a rectangular matrix and a square matrix. Expected error");
-M8 = subtraction(M0, M1);
-print_matrix(M8);
-
-printf("Matrix of size 0. Expected error");
-print_matrix(M9);
-
-printf("Matrix of negative size. Expected error");
-print_matrix(M10);
-
-
+	for (int i=0; i<4; i++) {
+                for(int j=0; j<4; j++) {
+			float arred = get_value(M3,i,j)-get_value(esperada,i,j);
+                        if(arred<-0.000001||arred>0.000001) {
+                        	erro = 1;
+			}
+                }
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
 }
-// main test
-void hfunit_test(){
-	super_mat_test();
+
+void subtract_matrix_test(char* msg) {
+         struct Matrix M1, M2, M3, esperada;
+        typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+        typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
+	
+	typ_var val3[16] = {val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1),val(-1)};
+	M1 = set_values(4, 4, val1);
+        M2 = set_values(4, 4, val2);
+        esperada = set_values(4, 4, val3);
+	M3 = subtraction(M1, M2);
+	int erro = 0;
+        for (int i=0; i<4; i++) { 
+                for(int j=0; j<4; j++) {
+			float arred = get_value(M3,i,j)-get_value(esperada,i,j);
+                        if(arred<-0.000001||arred>0.000001){ 
+				erro = 1;
+			}
+                }
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+void mult_matrix_test(char* msg) {
+    	struct Matrix M1;
+	struct Matrix M2;
+	struct Matrix M3;
+	struct Matrix esperada;
+        typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+        typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
+
+        typ_var val3[16] = {val(100),val(110),val(120),val(130),val(228),val(254),val(280),val(306),val(356),val(398),val(440),val(482),val(484),val(542),val(600),val(658)};
+        M1 = set_values(4, 4, val1);
+        M2 = set_values(4, 4, val2);
+        esperada = set_values(4, 4, val3);
+        M3 = multiplication(M1, M2);
+        int erro = 0;
+   	for (int i=0; i<4; i++) {
+        	for(int j=0; j<4; j++) {
+			float arred = get_value(M3,i,j)-get_value(esperada,i,j);
+                        if(arred<-0.000001||arred>0.000001) {
+				erro = 1;
+			}
+	   	}
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void multE_test(char* msg) {
+	struct Matrix M1, M3, esperada;
+	typ_var Multiplicator =  val(5);
+
+        typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+        typ_var val3[16] = {val(5),val(10),val(15),val(20),val(25),val(30),val(35),val(40),val(45),val(50),val(55),val(60),val(65),val(70),val(75),val(80)};
+
+        M1 = set_values(4, 4, val1);
+        esperada = set_values(4, 4, val3);
+        M3 = multE(M1, Multiplicator);
+        int erro = 0;
+
+        for (int i=0; i<4; i++) {
+                for(int j=0; j<4; j++) {
+			float arred = get_value(M3,i,j)-get_value(esperada,i,j);
+                        if(arred<-0.000001||arred>0.000001) {
+				erro = 1;
+			}
+                }
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void divE_test(char* msg) {
+        struct Matrix M1, M3, esperada;
+        typ_var Multiplicator =  val(5);
+
+        typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+        typ_var val3[16] = {val(0.199),val(0.339),val(0.6),val(0.8),val(1),val(1.2),val(1.399),val(1.6),val(1.79),val(2),val(2.2),val(2.4),val(2.59),val(2.79),val(3),val(3.2)};
+
+        M1 = set_values(4, 4, val1);
+        esperada = set_values(4, 4, val3);
+        M3 = divE(M1, Multiplicator);
+	int erro = 0;
+	
+        for (int i=0; i<4; i++) {
+                for(int j=0; j<4; j++) {
+			float arred = get_value(M3,i,j)-get_value(esperada,i,j);
+			if(arred<-0.000001||arred>0.000001) {
+				erro = 1;
+			}
+			printf("%f\t",arred);
+                }
+        }
+	hfunit_assert(erro==0, msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void invert_test(char* msg) {
+    	struct Matrix M1, M3, esperada;
+
+        typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+	typ_var val3[16] = {val(0.25),val(0),val(-0.099),val(-0.19),val(-0.19),val(0),val(-0.09),val(0.3),val(0),val(-0.16),val(0.13),val(0.09),val(0),val(0.16),val(0.16),val(0)};
+
+        M1 = set_values(4, 4, val1);
+        esperada = set_values(4, 4, val3);
+        M3 = Invert(M1);
+        int erro = 0;
+    	for (int i=0; i<4; i++) {
+        	for(int j=0; j<4; j++) {
+			float arred = get_value(M3,i,j)-get_value(esperada,i,j);
+			if(arred<-0.000001||arred>0.000001){
+				erro = 1;
+			}
+           	}
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void zeros_test(char* msg) {
+	struct Matrix M3, esperada;
+
+        typ_var val3[16] = {val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0)};
+
+        esperada = set_values(4, 4, val3);
+        M3 = zeros(4, 4);
+        int erro = 0;
+
+        for (int i=0; i<4; i++) {
+                for(int j=0; j<4; j++) {
+			if(get_value(M3,i,j)!=get_value(esperada,i,j)) {
+				erro = 1;
+                	}
+        	}
+	}
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+
+void setEye_test(char* msg) {
+	struct Matrix M3, esperada;
+
+        typ_var val3[16] = {val(1),val(0),val(0),val(0),val(0),val(1),val(0),val(0),val(0),val(0),val(1),val(0),val(0),val(0),val(0),val(1)};
+
+        esperada = set_values(4, 4, val3);
+        M3 = setEye(4);
+        int erro = 0;
+
+        for (int i=0; i<4; i++) {
+            for(int j=0; j<4; j++) {
+		if (get_value(M3,i,j)!=get_value(esperada,i,j)) {
+			erro = 1;
+		} 
+            }
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void ones_test(char* msg) {
+	struct Matrix M3, esperada;
+
+        typ_var val3[16] = {val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1),val(1)};
+
+        esperada = set_values(4, 4, val3);
+        M3 = ones(4, 4);
+        int erro = 0;
+
+        for (int i=0; i<4; i++) { 
+                for(int j=0; j<4; j++) {
+			if(get_value(M3,i,j)!=get_value(esperada,i,j)) {
+                        	erro = 1;
+			}
+                }
+        }
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void blkdiag2_test(char* msg) {
+	struct Matrix M1, M2, M3, esperada;
+        typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+        typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
+
+        typ_var val3[64] = {val(1),val(2),val(3),val(4),val(0),val(0),val(0),val(0),val(5),val(6),val(7),val(8),val(0),val(0),val(0),val(0),val(9),val(10),val(11),val(12),val(0),val(0),val(0),val(0),val(13),val(14),val(15),val(16),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(0),val(2),val(3),val(4),val(5),val(0),val(0),val(0),val(0),val(6),val(7),val(8),val(9),val(0),val(0),val(0),val(0),val(10),val(11),val(12),val(13),val(0),val(0),val(0),val(0),val(14),val(15),val(16),val(17)};
+        M1 = set_values(4, 4, val1);
+        M2 = set_values(4, 4, val2);
+        esperada = set_values(8, 8, val3);
+        M3 = blkdiag2(M1, M2);
+        int erro = 0;
+	
+	for (int i=0; i<8; i++) {
+		for(int j=0; j<8; j++) {
+			if(get_value(M3,i,j)!=get_value(esperada,i,j)) {
+				erro = 1;
+			}
+		}
+	}
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M3);
+        printf("Esperada:\n");
+        print_matrix(esperada);
+}
+
+void customMat_test(char* msg) {
+	struct Matrix M1, M2, M3, M5, M7, esperada;
+	int conf[4] = {2,2,8,8};
+
+	typ_var val1[16] = {val(1),val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16)};
+
+        typ_var val2[16] = {val(2),val(3),val(4),val(5),val(6),val(7),val(8),val(9),val(10),val(11),val(12),val(13),val(14),val(15),val(16),val(17)};
+
+	typ_var val3[16] = {val(4),val(2),val(2),val(2),val(0),val(1),val(-3),val(3),val(0),val(-1),val(3),val(3),val(0),val(3),val(1),val(1)};
+
+	typ_var val4[64] = {val(1),val(2),val(3),val(4),val(2),val(3),val(4),val(5),val(5),val(6),val(7),val(8),val(6),val(7),val(8),val(9),val(9),val(10),val(11),val(12),val(10),val(11),val(12),val(13),val(13),val(14),val(15),val(16),val(14),val(15),val(16),val(17),val(4),val(2),val(2),val(2),val(3),val(5),val(7),val(9),val(0),val(1),val(-3),val(3),val(11),val(13),val(15),val(17),val(0),val(-1),val(3),val(3),val(19),val(21),val(23),val(25),val(0),val(3),val(1),val(1),val(27),val(29),val(31),val(33)};
+
+	M1 = set_values(4, 4, val1);
+        M2 = set_values(4, 4, val2);
+	M3 = set_values(4, 4, val3);
+	M5 = sum(M1, M2);
+	M7 = customMat(conf, 4, M1, M2, M3, M5);
+	esperada = set_values(8,8,val4);
+	int erro = 0;
+	for(int i=0; i<8; i++) {
+		for(int j=0; j<8; j++) {
+			if(get_value(M7,i,j)!=get_value(esperada,i,j)) {
+				erro = 1;
+			}
+		}
+	}
+	hfunit_assert(erro==0,msg);
+	printf("Resultado:\n");
+        print_matrix(M7);
+        printf("Esperada:\n");
+        print_matrix(esperada);	
+}
+
+void mat_test() {
+	transposed_test ("Matriz transposta");
+	sum_matrix_test("Soma de duas matrizes");
+	subtract_matrix_test("Subtração de matrizes");
+	mult_matrix_test("Multiplicação de matrizes");
+	multE_test("Multiplicação de matriz por um número");
+	divE_test("Divisão de uma matriz por um número");
+	zeros_test("Matriz nula");
+	setEye_test("Matriz identidade");
+	ones_test("Matriz de 1");
+	blkdiag2_test("Concatenação diagonal de duas matrizes");
+	customMat_test("Matriz customizada");
+}
+
+//main test
+void hfunit_test() {
+	mat_test();
 }
